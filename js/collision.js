@@ -13,15 +13,16 @@ canvas.addEventListener('mousemove', ({offsetX, offsetY}) => {
     target.y = offsetY;
 })
 
-const boxs = Array.from(Array(50), () => {
+const boxs = Array.from(Array(100), () => {
     const rect = new Rect(
         Math.floor(Math.random() * canvas.width),
         Math.floor(Math.random() * canvas.height),
         Math.floor(Math.random() * 16 + 40),
-        Math.floor(Math.random() * 16 + 32));
+        Math.floor(Math.random() * 16 + 32)
+    );
 
-        const temp = Math.floor(Math.random()*6)*8+120;
-        rect.color = 'rgba(' + temp + ',' + temp + ',' + temp +', .1)';
+    const temp = Math.floor(Math.random()*6)*8+120;
+    rect.color = 'rgba(' + temp + ',' + temp + ',' + temp +', .1)';
     return (rect);
 })
 
@@ -47,8 +48,8 @@ const logo = [
 logo.forEach((str, y) => {
     for (let x = str.length;x--;){
         const rect = new Rect(
-            canvas.width / 2 - 8 * 16 + x * 16,
-            canvas.height / 2 - 8 * 16 + y * 16,
+            canvas.width / 10 - 8 * 16 + x * 16,
+            canvas.height / 6 - 8 * 16 + y * 16,
             16,
             16
             );
@@ -96,22 +97,22 @@ function intersection(object, index, cb){
 }
 
 function move(object, index, vx, vy){
-    object.x += vx; //velocity
-    if (vx > 0){
-        intersection(object, index, (box)=>{
-            if (object.right > box.left){
-                object.right = box.left;
-            }
-        })
-    } else if (vx < 0){
-        intersection(object, index, (box)=>{
-            if (object.left < box.right){
-                object.left = box.right;
-            }
-        })
-    }
+    // object.x += 3/vx; //velocity
+    // if (vx > 0){
+    //     intersection(object, index, (box)=>{
+    //         if (object.right > box.left){
+    //             object.right = box.left;
+    //         }
+    //     })
+    // } else if (vx < 0){
+    //     intersection(object, index, (box)=>{
+    //         if (object.left < box.right){
+    //             object.left = box.right;
+    //         }
+    //     })
+    // }
 
-    object.y += vy;//velocity
+    object.y += 300/vy;//velocity  Чтобы сделать равнозамедленное движение поменятьк оэффициент на 3*
     if (vy > 0){
         intersection(object, index, (box)=>{
             if (object.bottom > box.top){
@@ -125,6 +126,7 @@ function move(object, index, vx, vy){
             }
         })
     }
+
 }
 
 function draw(){
@@ -151,13 +153,13 @@ function update(){
         const moveTo = new Vector(target.x - player.x, target.y - player.y)
         if (moveTo.len > 1)
         {
-            moveTo.len /= (player.weight*2);
+           // moveTo.len /= (player.weight*2);          //Раскомментить для равнозамедленного (будет учитываться вес)
             move(player, index, moveTo.x, moveTo.y);
         }
     })
     //
 
-    
+
     draw();
     requestAnimationFrame(update);
 }
